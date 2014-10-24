@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 014918da6662bad4f8c1bb3a0847ea0d
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - wallGameObject: {instanceID: 0}
+  - playerObject: {instanceID: 0}
+  - Enemy: {fileID: 11400000, guid: 83c73b36dde45ef42907d72185b1c95a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
