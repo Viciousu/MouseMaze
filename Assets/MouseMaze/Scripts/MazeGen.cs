@@ -17,12 +17,21 @@ public class MazeGen : MonoBehaviour
   public GameObject wallObject;
   public GameObject playerObject;
   public GameObject floorObject;
+
   public GameObject exitObject;
   private GameObject exitWallInstance;
+
   public GameObject enemyObject;
   private GameObject enemyInstance;
+
   public GameObject cheese;
+
+  public GameObject CheeseParent;
+  public GameObject EnemyParent;
+
+
   public Vector3[] waypoints;
+
   public bool UsePlayerObject;
 
   private RaycastHit Hit;
@@ -70,20 +79,19 @@ public class MazeGen : MonoBehaviour
           if ( pos == exitPosition )
           {
             exitWallInstance = Instantiate( wallObject ) as GameObject;
-            if ( exitWallInstance != null )
-              exitWallInstance.transform.position = pos;
+            exitWallInstance.transform.position = pos;
+			exitWallInstance.transform.parent = this.transform;
 
             pos.y += 2;
             var exitInstance = Instantiate( exitObject ) as GameObject;
-            if ( exitInstance != null )
-              exitInstance.transform.position = pos;
+            exitInstance.transform.position = pos;
+			exitInstance.transform.parent = this.transform;
             continue;
           }
 
-          GameObject wall = Instantiate( wallObject ) as GameObject;
-
-          if ( wall != null )
-            wall.transform.position = pos;
+        	GameObject wall = Instantiate( wallObject ) as GameObject;
+        	wall.transform.position = pos;
+			wall.transform.parent = this.transform;
         }
       }
 
@@ -108,6 +116,7 @@ public class MazeGen : MonoBehaviour
             var enemyStartPosition = GetRandomPosition( 0, HeightOfMaze, 0, WidthOfMaze );
             enemyStartPosition.y = 0;
             enemyInstance.transform.position = enemyStartPosition;
+			enemyInstance.transform.parent = EnemyParent.transform;
             m += 1;
           }
         }
@@ -121,6 +130,7 @@ public class MazeGen : MonoBehaviour
           var cheesePos = GetRandomPosition( 0, HeightOfMaze, 0, WidthOfMaze );
           cheesePos.y = 0;
           cheeseInstance.transform.position = cheesePos;
+		  cheeseInstance.transform.parent = CheeseParent.transform;
           c += 1;
         }
       }
