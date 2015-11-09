@@ -21,6 +21,7 @@ public class PlayerMain : MonoBehaviour
   public bool ToggleMinimap = false;
   public MazeGen MazeGen;
   public int CurrentHP = 100;
+  public PlayerMovement Movement;
 
   // Use this for initialization
   void Start()
@@ -61,6 +62,8 @@ public class PlayerMain : MonoBehaviour
       }
 
     }
+
+    //ReserveMove();
 
     Move( enableFPSCamera );
   }
@@ -103,6 +106,18 @@ public class PlayerMain : MonoBehaviour
       Application.LoadLevel( "WinScene" );
       Debug.Log( "Game over! You won." );
     }
+  }
+
+  private void ReserveMove()
+  {
+    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+      Movement.ReservedDirection = Directions.Left;
+
+    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+      Movement.ReservedDirection = Directions.Right;
+
+    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+      Movement.ReservedDirection = Directions.Backward;
   }
 
   private void Move( bool isFPSView )

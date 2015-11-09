@@ -24,7 +24,7 @@ public class GunShoot : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if ( IsPlayer && Input.GetMouseButtonDown( 0 ) && CurrentAmmo > 0 )
+    if ( IsPlayer && ( Input.GetMouseButtonDown( 0 ) || Input.GetKey( KeyCode.W ) || Input.GetKey( KeyCode.UpArrow ) ) && CurrentAmmo > 0 )
     {
       Shooting();
       CurrentAmmo -= 1;
