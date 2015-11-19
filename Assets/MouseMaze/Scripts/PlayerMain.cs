@@ -22,6 +22,7 @@ public class PlayerMain : MonoBehaviour
   public MazeGen MazeGen;
   public int CurrentHP = 100;
   public PlayerMovement Movement;
+  public TouchSwipeHandler touchSwipeHandler;
 
   // Use this for initialization
   void Start()
@@ -44,27 +45,26 @@ public class PlayerMain : MonoBehaviour
     if ( Input.GetKeyDown( KeyCode.Escape ) )
       Application.LoadLevel( "MenuScene" );
 
-    if ( Input.GetKeyDown( KeyCode.F ) )
-    {
-      enableFPSCamera = !enableFPSCamera;
-      mouseLookX.enabled = enableFPSCamera;
-      transform.rotation = Quaternion.identity;
-      fpsCamera.enabled = enableFPSCamera;
-      if ( enableFPSCamera )
-      {
-        topDownCamera.pixelRect = new Rect( Screen.width - 200f, Screen.height - 150, 200, 150 );
-        topDownCamera.clearFlags = CameraClearFlags.Depth;
-      }
-      else
-      {
-        topDownCamera.clearFlags = CameraClearFlags.Skybox;
-        topDownCamera.rect = new Rect( 0f, 0f, Screen.width, Screen.height );
-      }
-
-    }
+//    if ( Input.GetKeyDown( KeyCode.F ) )
+//    {
+//      enableFPSCamera = !enableFPSCamera;
+//      mouseLookX.enabled = enableFPSCamera;
+//      transform.rotation = Quaternion.identity;
+//      fpsCamera.enabled = enableFPSCamera;
+//      if ( enableFPSCamera )
+//      {
+//        topDownCamera.pixelRect = new Rect( Screen.width - 200f, Screen.height - 150, 200, 150 );
+//        topDownCamera.clearFlags = CameraClearFlags.Depth;
+//      }
+//      else
+//      {
+//        topDownCamera.clearFlags = CameraClearFlags.Skybox;
+//        topDownCamera.rect = new Rect( 0f, 0f, Screen.width, Screen.height );
+//      }
+//    }
 
     ReserveMove();
-    Move( enableFPSCamera );
+    Move();
   }
 
 
@@ -109,6 +109,27 @@ public class PlayerMain : MonoBehaviour
 
   private void ReserveMove()
   {
+#if UNITY_IPHONE || UNITY_ANDROID
+	var swipeType = touchSwipeHandler.GetSwipeDirection();
+
+		switch (swipeType) {
+		case TouchSwipeHandler.SwipeDirections.Left:
+			Movement.ReservedDirection = Directions.Left;
+			break;
+		case TouchSwipeHandler.SwipeDirections.Right:
+			Movement.ReservedDirection = Directions.Right;
+			break;
+		case TouchSwipeHandler.SwipeDirections.Down:
+			Movement.ReservedDirection = Directions.Backward;
+			break;
+		case TouchSwipeHandler.SwipeDirections.Up:
+			gunShoot.Shooting();
+			break;
+		default:
+			break;
+		}
+
+#else
 	if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
       Movement.ReservedDirection = Directions.Left;
 
@@ -117,37 +138,14 @@ public class PlayerMain : MonoBehaviour
 
 	if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
       Movement.ReservedDirection = Directions.Backward;
+
+#endif
   }
 
-  private void Move( bool isFPSView )
+  private void Move()
   {
     var velocity = new Vector3();
     var movement=new Vector3();
-
-//    if ( !isFPSView )
-//    {
-//      if ( Input.GetKey( KeyCode.W ) || Input.GetKey( KeyCode.A ) || Input.GetKey( KeyCode.S ) || Input.GetKey( KeyCode.D ) )
-//      {
-//        var z = Input.GetKey( KeyCode.W ) ? 1.0f : 0;
-//        z = Input.GetKey( KeyCode.S ) ? -1.0f : z;
-//
-//        var x = Input.GetKey( KeyCode.D ) ? 1.0f : 0;
-//        x = Input.GetKey( KeyCode.A ) ? -1.0f : x;
-//
-//        movement.z = speed * z;
-//        movement.x = speed * x;
-//
-//        //face movement dir
-//        Vector3 keyboardPosition = new Vector3( x, 0, z );
-//        transform.LookAt( transform.position + keyboardPosition );
-//      }
-//    }
-//    else
-//    {
-//      movement.x = Input.GetAxis( "Horizontal" ) * speed;
-//      movement.z = Input.GetAxis( "Vertical" ) * speed;
-//      movement = transform.TransformDirection( movement );
-//    }
 
 	movement = transform.TransformDirection( movement );
     velocity.y += Physics.gravity.y * Time.deltaTime;

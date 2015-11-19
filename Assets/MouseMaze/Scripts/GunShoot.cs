@@ -24,18 +24,21 @@ public class GunShoot : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-	if ( IsPlayer && ( Input.GetMouseButtonDown( 0 ) || Input.GetKeyDown( KeyCode.W ) || Input.GetKeyDown( KeyCode.UpArrow ) ) && CurrentAmmo > 0 )
+	if ( IsPlayer && ( Input.GetKeyDown( KeyCode.W ) || Input.GetKeyDown( KeyCode.UpArrow ) ) )
     {
-      Shooting();
-      CurrentAmmo -= 1;
+		Shooting();
     }
   }
 
   public void Shooting()
   {
-    float spawnDistance = 0.01f;
-    GameObject bullet = Instantiate( Bullet, Nozzle.transform.position + spawnDistance * Nozzle.transform.forward, transform.rotation /*Quaternion.identity*/ ) as GameObject;
+	if(CurrentAmmo <= 0 )
+		return;
+
+    float spawnDistance = 0.03f;
+	GameObject bullet = Instantiate( Bullet, Nozzle.transform.position + spawnDistance * Nozzle.transform.forward, Nozzle.transform.rotation ) as GameObject;
     bullet.GetComponent<Bullet>().Shoot();
     audio.PlayOneShot( GunShotSound );
+    CurrentAmmo -= 1;
   }
 }
