@@ -51,8 +51,15 @@ public class MenuScript : MonoBehaviour
 
     if ( IsInOptions )
     {
+
+	
+#if UNITY_IPHONE || UNITY_ANDROID
+	GUI.Label( new Rect( ( originalWidth - buttonWidth ) / 2f - buttonWidth, originalHeight / 2f - 5 * buttonHeight - offset, buttonWidth * 3, 100 ),
+	          "Controls:\n\n Swipe Left/Right - Turns\n\n Tap or Swipe Up - Shoot\n\n Swipe Down - U Turn", style );
+#else
       GUI.Label( new Rect( ( originalWidth - buttonWidth ) / 2f - buttonWidth, originalHeight / 2f - 5 * buttonHeight - offset, buttonWidth * 3, 100 ),
-          "Controls:\n\n WASD - Move\n\n LMB - Shoot\n\n F - Change view\n\n ESC - Main Menu", style );
+          "Controls:\n\n ASD or Arrows - Turns\n\n W or Up - Shoot\n\n F - Change view\n\n ESC - Main Menu", style );
+#endif
 
       cheezeCount = GUI.HorizontalSlider( new Rect( ( originalWidth - buttonWidth ) / 2f + buttonWidth,
                                          originalHeight / 2f + buttonHeight - offset + 5f,

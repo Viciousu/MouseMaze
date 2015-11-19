@@ -63,8 +63,7 @@ public class PlayerMain : MonoBehaviour
 
     }
 
-    //ReserveMove();
-
+    ReserveMove();
     Move( enableFPSCamera );
   }
 
@@ -110,13 +109,13 @@ public class PlayerMain : MonoBehaviour
 
   private void ReserveMove()
   {
-    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+	if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
       Movement.ReservedDirection = Directions.Left;
 
-    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+	if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
       Movement.ReservedDirection = Directions.Right;
 
-    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+	if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
       Movement.ReservedDirection = Directions.Backward;
   }
 
@@ -125,31 +124,32 @@ public class PlayerMain : MonoBehaviour
     var velocity = new Vector3();
     var movement=new Vector3();
 
-    if ( !isFPSView )
-    {
-      if ( Input.GetKey( KeyCode.W ) || Input.GetKey( KeyCode.A ) || Input.GetKey( KeyCode.S ) || Input.GetKey( KeyCode.D ) )
-      {
-        var z = Input.GetKey( KeyCode.W ) ? 1.0f : 0;
-        z = Input.GetKey( KeyCode.S ) ? -1.0f : z;
+//    if ( !isFPSView )
+//    {
+//      if ( Input.GetKey( KeyCode.W ) || Input.GetKey( KeyCode.A ) || Input.GetKey( KeyCode.S ) || Input.GetKey( KeyCode.D ) )
+//      {
+//        var z = Input.GetKey( KeyCode.W ) ? 1.0f : 0;
+//        z = Input.GetKey( KeyCode.S ) ? -1.0f : z;
+//
+//        var x = Input.GetKey( KeyCode.D ) ? 1.0f : 0;
+//        x = Input.GetKey( KeyCode.A ) ? -1.0f : x;
+//
+//        movement.z = speed * z;
+//        movement.x = speed * x;
+//
+//        //face movement dir
+//        Vector3 keyboardPosition = new Vector3( x, 0, z );
+//        transform.LookAt( transform.position + keyboardPosition );
+//      }
+//    }
+//    else
+//    {
+//      movement.x = Input.GetAxis( "Horizontal" ) * speed;
+//      movement.z = Input.GetAxis( "Vertical" ) * speed;
+//      movement = transform.TransformDirection( movement );
+//    }
 
-        var x = Input.GetKey( KeyCode.D ) ? 1.0f : 0;
-        x = Input.GetKey( KeyCode.A ) ? -1.0f : x;
-
-        movement.z = speed * z;
-        movement.x = speed * x;
-
-        //face movement dir
-        Vector3 keyboardPosition = new Vector3( x, 0, z );
-        transform.LookAt( transform.position + keyboardPosition );
-      }
-    }
-    else
-    {
-      movement.x = Input.GetAxis( "Horizontal" ) * speed;
-      movement.z = Input.GetAxis( "Vertical" ) * speed;
-      movement = transform.TransformDirection( movement );
-    }
-
+	movement = transform.TransformDirection( movement );
     velocity.y += Physics.gravity.y * Time.deltaTime;
     movement += velocity;
     movement += Physics.gravity;

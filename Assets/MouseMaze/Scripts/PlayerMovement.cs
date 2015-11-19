@@ -40,7 +40,8 @@ public class PlayerMovement : MonoBehaviour
       ScanSurroundingsAndMove();
     lastPosition = currentPosition;
 
-    transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( currentDirection ), .5f );
+	transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( currentDirection ), .5f );
+		
   }
 
   public void ScanSurroundingsAndMove()
@@ -72,13 +73,7 @@ public class PlayerMovement : MonoBehaviour
       freeDirections.Add( right );
 
     if ( freeDirections.Count == 0 )
-    {
-      transform.rotation = Quaternion.LookRotation( backward );
-      currentDirection = backward;
-      return;
-    }
-
-    Debug.LogWarning(ReservedDirection);
+		ReservedDirection = Directions.Backward;
 
     if (ReservedDirection == Directions.Right && canGoRight)
     {
@@ -92,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
     }
     else if (ReservedDirection == Directions.Backward)
     {
-      transform.rotation = Quaternion.LookRotation(backward);
+      //transform.rotation = Quaternion.LookRotation(backward);
       currentDirection = backward;
       ReservedDirection = Directions.Forward;
     }
@@ -107,13 +102,13 @@ public class PlayerMovement : MonoBehaviour
         ReservedDirection = Directions.Forward;
       }
     }
-
+	
     StartCoroutine( MoveFromTo( transform, currentDirection, 1 / speed ) );
   }
 
   private bool IsWall( RaycastHit hit )
   {
-    return hit.collider.tag == "Wall";
+	return hit.collider.tag == "Wall";
   }
 
   private void SmoothLook( Vector3 newDirection )

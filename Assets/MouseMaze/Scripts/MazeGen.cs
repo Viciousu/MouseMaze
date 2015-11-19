@@ -29,7 +29,6 @@ public class MazeGen : MonoBehaviour
   public GameObject CheeseParent;
   public GameObject EnemyParent;
 
-
   public Vector3[] waypoints;
 
   public bool UsePlayerObject;
